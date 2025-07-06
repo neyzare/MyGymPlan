@@ -15,16 +15,16 @@ import { useState } from "react";
 export function NavbarGym() {
   const navItems = [
     {
-      name: "caca",
+      name: "Programme",
+      link: "/programme",
+    },
+    {
+      name: "Features",
       link: "#features",
     },
     {
-      name: "Pricing",
-      link: "#pricing",
-    },
-    {
-      name: "Contact",
-      link: "#contact",
+      name: "Features",
+      link: "#features",
     },
   ];
 
@@ -35,18 +35,18 @@ export function NavbarGym() {
       <Navbar>
         {/* Desktop Navigation */}
         <NavBody>
-          <NavbarLogo />
+          <NavbarLogo/>
           <NavItems items={navItems} className="font-bold text-[18px] text-white"/>
           <div className="flex items-center gap-4">
             <NavbarButton className="text-black">Login</NavbarButton>
-            <NavbarButton variant="primary">Inscription</NavbarButton>
+            <NavbarButton href="inscription" variant="primary">Inscription</NavbarButton>
           </div>
         </NavBody>
 
         {/* Mobile Navigation */}
         <MobileNav>
           <MobileNavHeader>
-            <NavbarLogo />
+            <NavbarLogo/>
             <MobileNavToggle
               isOpen={isMobileMenuOpen}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
