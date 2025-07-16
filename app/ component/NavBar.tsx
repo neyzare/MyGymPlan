@@ -24,7 +24,7 @@ export function NavbarGym() {
     },
     {
       name: "Features",
-      link: "#features",
+      link: "#featuresr",
     },
   ];
 
@@ -38,7 +38,7 @@ export function NavbarGym() {
           <NavbarLogo/>
           <NavItems items={navItems} className="font-bold text-[18px] text-white"/>
           <div className="flex items-center gap-4">
-            <NavbarButton className="text-black">Login</NavbarButton>
+            <NavbarButton href="login" className="text-black">Login</NavbarButton>
             <NavbarButton href="inscription" variant="primary">Inscription</NavbarButton>
           </div>
         </NavBody>
