@@ -22,7 +22,7 @@ interface CarouselProps {
 }
 
 type Card = {
-  src: string;
+  src: React.ReactNode;
   title: string;
   category: string;
   content: React.ReactNode;
