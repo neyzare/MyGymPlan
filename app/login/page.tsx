@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -8,28 +8,45 @@ import {
   IconBrandGoogle,
   IconBrandOnlyfans,
 } from "@tabler/icons-react";
+import axios from "axios";
 
 function SignupForm() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [email, setEmail] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+
+  async function logicLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log("Form submitted");
-  };
+    try {
+      const response = await axios.post("/api/users",{
+        email,
+        password
+      })
+
+      if (response.status === 200) {
+        console.log("vous étes connecté")
+      } 
+    } catch (error) {
+      console.log("l'erreur est : ", error);
+      
+    }
+  }
+
   return (
     <div className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-white mt-16 border-2 border-blue-300">
       <h2 className="text-xl font-bold text-neutral-800 dark:text-black">
         Bienvenue sur MyGymPlan
       </h2>
 
-      <form className="my-8" onSubmit={handleSubmit}>
+      <form className="my-8" onSubmit={logicLogin}>
         <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
         </div>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Email Address</Label>
-          <Input id="email" placeholder="projectmayhem@fc.com" type="email" />
+          <Input id="email" placeholder="projectmayhem@fc.com" type="email" value={email} onChange={e =>setEmail(e.target.value)} />
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" placeholder="••••••••" type="password" />
+          <Input id="password" placeholder="••••••••" type="password" value={password} onChange={e => setPassword(e.target.value)} />
         </LabelInputContainer>
 
         <button
