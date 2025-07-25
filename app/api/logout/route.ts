@@ -8,7 +8,7 @@ export async function POST() {
       { status: 200 }
     );
     
-    response.cookies.set('session', '', {
+    response.cookies.set('authToken', '', {
       expires: new Date(0),
       path: '/',
       httpOnly: true,

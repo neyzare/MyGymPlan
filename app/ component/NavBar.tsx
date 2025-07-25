@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/resizable-navbar";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import Link from 'next/link';
 
 export function NavbarGym() {
   const navItems = [
@@ -29,7 +30,7 @@ export function NavbarGym() {
     },
   ];
 
-  const { user, logout } = useAuth();
+  const { user, logout, loading } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -40,6 +41,11 @@ export function NavbarGym() {
     }
   };
 
+  // Ne rien afficher pendant le chargement initial
+  if (loading) {
+    return null;
+  }
+
   return (
     <div className="relative w-full">
       <Navbar>
@@ -48,19 +54,21 @@ export function NavbarGym() {
           <NavbarLogo/>
           <NavItems items={navItems} className="font-bold text-[14px] text-white"/>
 
-          {
-            !user ? (
-              <div className="flex items-center gap-4">
-                <NavbarButton href="/login" className="text-black">Login</NavbarButton>
-                <NavbarButton href="/inscription" variant="primary">Inscription</NavbarButton>
-              </div>
-            ) : (
-              <div className="flex items-center gap-4">
-                <span className="text-white">Bonjour, {user.name}</span>
-                <NavbarButton onClick={handleLogout}>Déconnexion</NavbarButton>
-              </div>
-            )
-          }
+          {!user ? (
+            <div className="flex items-center gap-4">
+              <Link href="/login" passHref>
+                <NavbarButton className="text-black">Login</NavbarButton>
+              </Link>
+              <Link href="/inscription" passHref>
+                <NavbarButton variant="primary">Inscription</NavbarButton>
+              </Link>
+            </div>
+          ) : (
+            <div className="flex items-center gap-4">
+              <span className="text-white">Bonjour, {user.name}</span>
+              <NavbarButton onClick={handleLogout}>Déconnexion</NavbarButton>
+            </div>
+          )}
           
         </NavBody>
 
@@ -79,34 +87,47 @@ export function NavbarGym() {
             onClose={() => setIsMobileMenuOpen(false)}
           >
             {navItems.map((item, idx) => (
-              <a
-                key={`mobile-link-${idx}`}
-                href={item.link}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className=""
-              >
-                <span className="block">{item.name}</span>
-              </a>
+              item.link.startsWith('#') ? (
+                <a
+                  key={`mobile-link-${idx}`}
+                  href={item.link}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className=""
+                >
+                  <span className="block">{item.name}</span>
+                </a>
+              ) : (
+                <Link
+                  key={`mobile-link-${idx}`}
+                  href={item.link}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className=""
+                >
+                  <span className="block">{item.name}</span>
+                </Link>
+              )
             ))}
             <div className="flex w-full flex-col gap-4">
               {!user ? (
                 <>
-                  <NavbarButton
-                    href="/login"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    variant="primary"
-                    className="w-full"
-                  >
-                    Login
-                  </NavbarButton>
-                  <NavbarButton
-                    href="/inscription"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    variant="primary"
-                    className="w-full"
-                  >
-                    Inscription
-                  </NavbarButton>
+                  <Link href="/login" passHref>
+                    <NavbarButton
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      variant="primary"
+                      className="w-full"
+                    >
+                      Login
+                    </NavbarButton>
+                  </Link>
+                  <Link href="/inscription" passHref>
+                    <NavbarButton
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      variant="primary"
+                      className="w-full"
+                    >
+                      Inscription
+                    </NavbarButton>
+                  </Link>
                 </>
               ) : (
                 <NavbarButton

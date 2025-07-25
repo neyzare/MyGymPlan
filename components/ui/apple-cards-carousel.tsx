@@ -22,7 +22,7 @@ interface CarouselProps {
 }
 
 type Card = {
-  src: React.ReactNode;
+  src: string;
   title: string;
   category: string;
   content: React.ReactNode;
@@ -279,8 +279,8 @@ export const BlurImage = ({
   return (
     <img
       className={cn(
-        "h-full w-full transition duration-300",
-        isLoading ? "blur-sm" : "blur-0",
+        "h-full w-full transition-all duration-500",
+        isLoading ? "scale-110 blur-2xl" : "scale-100 blur-sm",
         className,
       )}
       onLoad={() => setLoading(false)}

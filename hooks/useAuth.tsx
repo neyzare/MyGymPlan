@@ -9,10 +9,26 @@ interface User {
 }
 
 export const useAuth = () => {
-  const [user, setUser] = useState<User | null>(null);
+  // Initialiser l'état utilisateur depuis localStorage
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window !== 'undefined') {
+      const savedUser = localStorage.getItem('user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    }
+    return null;
+  });
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
+
+  // Mettre à jour localStorage quand l'utilisateur change
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [user]);
 
   const login = async (email: string, password: string) => {
     try {
@@ -40,7 +56,6 @@ export const useAuth = () => {
 
   const logout = async () => {
     try {
-      // Call logout endpoint to invalidate session
       const response = await fetch('/api/logout', {
         method: 'POST',
         credentials: 'include',
@@ -51,6 +66,7 @@ export const useAuth = () => {
       }
 
       setUser(null);
+      localStorage.removeItem('user');
       router.push('/login');
     } catch (error) {
       console.error('Logout error:', error);
@@ -59,6 +75,12 @@ export const useAuth = () => {
   };
 
   const checkAuth = async () => {
+    // Si nous avons déjà un utilisateur dans le state, pas besoin de vérifier
+    if (user) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch('/api/auth/check', {
         credentials: 'include',
@@ -72,18 +94,20 @@ export const useAuth = () => {
         }
       } else {
         setUser(null);
+        localStorage.removeItem('user');
       }
     } catch (error) {
       console.error('Auth check error:', error);
       setUser(null);
+      localStorage.removeItem('user');
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    // Ne pas vérifier l'auth sur la page de login au chargement initial
-    if (pathname !== '/login') {
+    // Ne pas vérifier l'auth sur la page de login au chargement initial si on a déjà un utilisateur
+    if (pathname !== '/login' || !user) {
       checkAuth();
     } else {
       setLoading(false);
