@@ -13,6 +13,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@fortawesome/react-fontawesome": "^0.2.3",
     "@headlessui/react": "^2.2.4",
     "@heroui/form": "^2.1.21",
