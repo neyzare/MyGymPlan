@@ -51,20 +51,7 @@ export function FloatingDockDemo() {
       ),
       href: "#",
     },
-    {
-      title: "Twitter",
-      icon: (
-        <IconBrandX className="h-full w-full text-white" />
-      ),
-      href: "#",
-    },
-    {
-      title: "GitHub",
-      icon: (
-        <IconBrandGithub className="h-full w-full text-white" />
-      ),
-      href: "#",
-    },
+    
   ];
   return (
     <div className="fixed bottom-4 left-0 right-0 flex items-center justify-center z-50">

@@ -127,11 +127,11 @@ function IconContainer({
     return val - bounds.x - bounds.width / 2;
   });
 
-  let widthTransform = useTransform(distance, [-150, 0, 150], [40, 100, 40]);
-  let heightTransform = useTransform(distance, [-150, 0, 150], [40, 100, 40]);
+  let widthTransform = useTransform(distance, [-40, 0, 40], [40, 50, 40]);
+  let heightTransform = useTransform(distance, [-40, 0, 40], [40, 50, 40]);
 
-  let widthTransformIcon = useTransform(distance, [-150, 0, 150], [20, 45, 20]);
-  let heightTransformIcon = useTransform(distance, [-150, 0, 150], [20, 45, 20]);
+  let widthTransformIcon = useTransform(distance, [-40, 0, 40], [20, 45, 20]);
+  let heightTransformIcon = useTransform(distance, [-40, 0, 40], [20, 45, 20]);
 
   let width = useSpring(widthTransform, {
     mass: 0.1,
@@ -169,7 +169,7 @@ function IconContainer({
         <AnimatePresence>
           {hovered && (
             <motion.div
-              initial={{ opacity: 0, y: 10, x: "-50%" }}
+              initial={{ opacity: 0, y: 10, x: "-0%" }}
               animate={{ opacity: 1, y: 0, x: "-50%" }}
               exit={{ opacity: 0, y: 2, x: "-50%" }}
               className="absolute -top-8 left-1/2 w-fit rounded-lg bg-neutral-800 px-3 py-1 text-sm font-medium whitespace-pre text-white shadow-lg"
