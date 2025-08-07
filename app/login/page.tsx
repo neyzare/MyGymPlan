@@ -10,9 +10,11 @@ import {
   IconBrandOnlyfans,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../../hooks/useAuth";
 
 function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -24,32 +26,18 @@ function LoginPage() {
     setError("");
     
     try {
-      const response = await fetch("/api/users", {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        console.log("Connexion réussie");
-        router.push("/programme");
-      } else {
-        const data = await response.json();
-        setError(data.error || "Email ou mot de passe incorrect");
-      }
+      await login(email, password);
+      console.log("Connexion réussie");
+      router.push("/programme");
     } catch (error: any) {
-      setError("Une erreur est survenue");
-      console.error("Erreur de connexion:", error);
+      setError("Email ou mot de passe incorrect");
     } finally {
       setIsLoading(false);
     }
   }
 
   const handleSocialLogin = (provider: string) => {
-    // À implémenter plus tard
+   
     console.log(`Connexion avec ${provider} à implémenter`);
   };
 

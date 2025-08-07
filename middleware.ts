@@ -7,6 +7,7 @@ export async function middleware(request: NextRequest) {
 
   // Public paths that don't require authentication
   const isPublicPath = path === '/login' || path === '/inscription' || path === '/'
+  const isPrivatePath = path === '/login' || path === '/inscription'
 
   // Get the token from the cookies
   const token = request.cookies.get('authToken')?.value || ''
@@ -14,6 +15,10 @@ export async function middleware(request: NextRequest) {
   // If the user is not authenticated and trying to access a protected route
   if (!token && !isPublicPath) {
     return NextResponse.redirect(new URL('/login', request.url))
+  }
+
+  if (token && isPrivatePath) {
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   // If the user is authenticated and trying to access login/register page

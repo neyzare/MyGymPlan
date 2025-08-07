@@ -42,9 +42,9 @@ function SignupForm() {
         <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
           <LabelInputContainer>
             <Label htmlFor="firstname">First name</Label>
-            <Input 
-              id="firstname" 
-              placeholder="Tyler" 
+            <Input
+              id="firstname"
+              placeholder="Tyler"
               type="text"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
@@ -52,9 +52,9 @@ function SignupForm() {
           </LabelInputContainer>
           <LabelInputContainer>
             <Label htmlFor="lastname">Last name</Label>
-            <Input 
-              id="lastname" 
-              placeholder="Durden" 
+            <Input
+              id="lastname"
+              placeholder="Durden"
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
@@ -63,9 +63,9 @@ function SignupForm() {
         </div>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Email Address</Label>
-          <Input 
-            id="email" 
-            placeholder="projectmayhem@fc.com" 
+          <Input
+            id="email"
+            placeholder="projectmayhem@fc.com"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -73,9 +73,9 @@ function SignupForm() {
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
-          <Input 
-            id="password" 
-            placeholder="••••••••" 
+          <Input
+            id="password"
+            placeholder="••••••••"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

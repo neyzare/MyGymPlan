@@ -5,6 +5,7 @@ import React, {
   useState,
   createContext,
   useContext,
+  JSX,
 } from "react";
 import {
   IconArrowNarrowLeft,
@@ -21,17 +22,19 @@ interface CarouselProps {
   initialScroll?: number;
 }
 
-type Card = {
+interface Card {
   src: string;
   title: string;
   category: string;
   content: React.ReactNode;
-};
+}
 
-export const CarouselContext = createContext<{
+interface CarouselContextType {
   onCardClose: (index: number) => void;
   currentIndex: number;
-}>({
+}
+
+export const CarouselContext = createContext<CarouselContextType>({
   onCardClose: () => {},
   currentIndex: 0,
 });
@@ -41,6 +44,21 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // ✅ FIX: Détecter la taille d'écran côté client uniquement
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Vérification initiale
+    checkMobile();
+    
+    // Écouter les changements de taille
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (carouselRef.current) {
@@ -71,8 +89,8 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
 
   const handleCardClose = (index: number) => {
     if (carouselRef.current) {
-      const cardWidth = isMobile() ? 230 : 384; // (md:w-96)
-      const gap = isMobile() ? 4 : 8;
+      const cardWidth = isMobile ? 230 : 384; // (md:w-96)
+      const gap = isMobile ? 4 : 8;
       const scrollPosition = (cardWidth + gap) * (index + 1);
       carouselRef.current.scrollTo({
         left: scrollPosition,
@@ -80,10 +98,6 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
       });
       setCurrentIndex(index);
     }
-  };
-
-  const isMobile = () => {
-    return window && window.innerWidth < 768;
   };
 
   return (
@@ -277,7 +291,7 @@ export const BlurImage = ({
 }: ImageProps) => {
   const [isLoading, setLoading] = useState(true);
   return (
-    <img
+    <Image
       className={cn(
         "h-full w-full transition-all duration-500",
         isLoading ? "scale-110 blur-2xl" : "scale-100 blur-sm",

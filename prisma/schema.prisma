@@ -10,9 +10,58 @@ datasource db {
 
 model User {
   id        String   @id @default(uuid())
-  name String?
+  name      String?
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  programs  Program[]
+}
+
+model Exercise {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  type        String   // e.g., "biceps", "triceps", "shoulders", etc.
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  workoutExercises WorkoutExercise[]
+}
+
+model Program {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  workoutSessions WorkoutSession[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model WorkoutSession {
+  id          String   @id @default(uuid())
+  name        String   // e.g., "Day 1 - Upper Body", "Day 2 - Lower Body"
+  programId   String
+  program     Program  @relation(fields: [programId], references: [id])
+  exercises   WorkoutExercise[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model WorkoutExercise {
+  id              String   @id @default(uuid())
+  exerciseId      String
+  exercise        Exercise @relation(fields: [exerciseId], references: [id])
+  workoutSessionId String
+  workoutSession  WorkoutSession @relation(fields: [workoutSessionId], references: [id])
+  sets            Int
+  reps            Int
+  weight          Float?
+  restTime        Int?    // Rest time in seconds
+  notes           String?
+  order           Int     // Order in the workout
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

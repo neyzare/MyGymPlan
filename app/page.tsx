@@ -1,13 +1,7 @@
-"use client"
-
 import Image from "next/image";
 import { AppleCardsCarousel } from "./ component/AppleCardCarousel";
-import { FloatingDockDemo } from "./ component/FloatingDock";
-import { useState, useEffect } from "react";
-import axios from "axios";
 
 export default function Home() {
-
   return (
     <>
       <section className="mt-12 text-center px-4">

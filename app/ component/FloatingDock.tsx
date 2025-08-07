@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import { FloatingDock } from "@/components/ui/floating-dock";
+import Link from "next/link";
 import {
   IconBrandGithub,
   IconBrandX,
@@ -7,30 +10,33 @@ import {
   IconHome,
   IconNewSection,
   IconTerminal2,
+  IconBarbell,
 } from "@tabler/icons-react";
+import { useAuth } from "../../hooks/useAuth";
 
 export function FloatingDockDemo() {
+  const { user } = useAuth();
   const links = [
     {
       title: "Home",
       icon: (
         <IconHome className="h-full w-full text-white" />
       ),
-      href: "#",
+      href: "/",
     },
     {
-      title: "Products",
+      title: "Programme",
       icon: (
-        <IconTerminal2 className="h-full w-full text-white" />
+        <IconBarbell className="h-full w-full text-white" />
       ),
-      href: "#",
+      href: "/programme",
     },
     {
       title: "Components",
       icon: (
         <IconNewSection className="h-full w-full text-white" />
       ),
-      href: "#",
+      href: "/dashboard",
     },
     {
       title: "Aceternity UI",
@@ -51,15 +57,16 @@ export function FloatingDockDemo() {
       ),
       href: "#",
     },
-    
   ];
   return (
-    <div className="fixed bottom-4 left-0 right-0 flex items-center justify-center z-50">
-      <FloatingDock
-        desktopClassName="bg-neutral-900 shadow-lg"
-        mobileClassName="bg-neutral-900 shadow-lg"
-        items={links}
-      />
-    </div>
+    !user ? null : (
+      <div className="fixed bottom-4 left-0 right-0 flex items-center justify-center z-50">
+        <FloatingDock
+          desktopClassName="bg-neutral-900 shadow-lg"
+          mobileClassName="bg-neutral-900 shadow-lg"
+          items={links}
+        />
+      </div>
+    )
   );
 }
