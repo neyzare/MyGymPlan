@@ -3,9 +3,29 @@ import { NextResponse } from "next/server";
 import axios from "axios";
 
 export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const shouldSync = searchParams.get("sync") === "true";
+
+  // By default, return exercises from the database
+  if (!shouldSync) {
+    try {
+      const exercises = await prisma.exercise.findMany({
+        orderBy: { createdAt: "desc" },
+      });
+      return NextResponse.json(exercises);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des exercices depuis la DB:", error);
+      return NextResponse.json(
+        { error: "Erreur lors de la récupération des exercices" },
+        { status: 500 }
+      );
+    }
+  }
+
+  // If sync=true, pull from external API and insert missing exercises
   const options = {
     method: 'GET',
-    url: 'https://exercisedb.p.rapidapi.com/exercises',  
+    url: 'https://exercisedb.p.rapidapi.com/exercises/name/',  
     headers: {
       'x-rapidapi-key': process.env.API_KEY_EXERCICEDB,
       'x-rapidapi-host': 'exercisedb.p.rapidapi.com'
@@ -23,7 +43,7 @@ export async function GET(request: Request) {
       imageUrl: exercise.gifUrl || null,
     }));
 
-    const createdExercises = [];
+    const createdExercises = [] as any[];
     for (const exerciseData of exercisesToCreate) {
 
       const existingExercise = await prisma.exercise.findFirst({

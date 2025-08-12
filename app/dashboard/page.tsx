@@ -26,7 +26,7 @@ import {
 
 
 
-const ProgramLibrary = ({ userId }: { userId: string }) => {
+const ProgramLibrary: React.FC = () => {
   const [user, setUser] = useState({
     id: 1,
     firstName: "Alexandre",
